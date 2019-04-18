@@ -810,7 +810,7 @@ begin
         reconfig_from_xcvr => xcvr_to_reconfig);
   end generate;
   
-  coreclk : single_region
+  coreclk : global_region -- single_region
     port map(
       inclk  => core_clk,
       outclk => core_clk_out);

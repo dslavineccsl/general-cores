@@ -5,6 +5,66 @@ use work.wishbone_pkg.all;
 
 package pcie_wb_pkg is
 
+  constant c_pcie_eb_msi : t_sdb_msi := (
+    wbd_endian    => c_sdb_endian_big,
+    wbd_width     => x"7", -- 8/16/32-bit port granularity
+    sdb_component => (
+    addr_first    => x"0000000000000000",
+    addr_last     => x"000000000000ffff",
+    product => (
+    vendor_id     => x"0000000000000651", -- GSI
+    device_id     => x"8a670e74",
+    version       => x"00000001",
+    date          => x"20190304",
+    name          => "Altera-PCIe-EB-Slv ")));
+
+
+component pcie_wb_eb is
+  generic(
+    g_family            : string  := "Arria V";
+    g_fast_ack          : boolean := true;
+    sdb_addr            : t_wishbone_address;
+    g_timeout_cycles    : natural := 6250000; -- 100 ms at 62.5MHz    
+    g_fifo_size         : natural := 2048
+    );
+  port(
+    clk125_i      : in  std_logic; -- 125 MHz, free running
+    cal_clk50_i   : in  std_logic; --  50 MHz, shared between all PHYs
+    
+    -- Physical PCIe pins
+    pcie_refclk_i : in  std_logic; -- 100 MHz, must not derive clk125_i or cal_clk50_i
+    pcie_rstn_i   : in  std_logic; -- Asynchronous "clear sticky" PCIe pin
+    pcie_rx_i     : in  std_logic_vector(3 downto 0);
+    pcie_tx_o     : out std_logic_vector(3 downto 0);
+    
+    -- Commands from PC to FPGA
+    master_clk_i  : in  std_logic;
+    master_rstn_i : in  std_logic;
+    master_o      : out t_wishbone_master_out;
+    master_i      : in  t_wishbone_master_in;
+    
+    -- Command to PC from FPGA
+    slave_clk_i   : in  std_logic := '0';
+    slave_rstn_i  : in  std_logic := '1';
+    slave_i       : in  t_wishbone_slave_in := cc_dummy_slave_in;
+    slave_o       : out t_wishbone_slave_out;
+    
+    -- EB slave -- Commands from PC to FPGA
+    eb_slv_master_clk_i  : in  std_logic;
+    eb_slv_master_rstn_i : in  std_logic;
+    eb_slv_master_o      : out t_wishbone_master_out;
+    eb_slv_master_i      : in  t_wishbone_master_in;
+
+    -- debug output
+    r_cyc_o       : out std_logic;
+    r_cyc_eb_o    : out std_logic
+    
+    );
+end component;
+
+
+-- #############################################################################
+
   constant c_pcie_msi : t_sdb_msi := (
     wbd_endian    => c_sdb_endian_big,
     wbd_width     => x"7", -- 8/16/32-bit port granularity
@@ -43,7 +103,9 @@ package pcie_wb_pkg is
       slave_clk_i   : in  std_logic := '0';
       slave_rstn_i  : in  std_logic := '1';
       slave_i       : in  t_wishbone_slave_in := cc_dummy_slave_in;
-      slave_o       : out t_wishbone_slave_out);
+      slave_o       : out t_wishbone_slave_out;
+      
+      r_cyc_o       : out std_logic);
   end component;
   
   component pcie_altera is
