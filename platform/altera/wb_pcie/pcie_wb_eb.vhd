@@ -8,6 +8,7 @@ use work.wishbone_pkg.all;
 use work.etherbone_pkg.all;
 use work.eb_internals_pkg.all;
 use work.eb_hdr_pkg.all;
+use work.eb_pcie_slave_pkg.all;
 
 entity pcie_wb_eb is
   generic(
@@ -619,7 +620,7 @@ eb_slv_int_slave_in.sel <= wb_sel;
 eb_slv_int_slave_in.stb <= wb_stb  when (wb_bar = c_BAR_CFG and wb_adr(7) = '1') else '0';
 
 
-eb_slave: entity work.eb_pci_slave
+eb_slave: entity eb_pci_slave
   generic map (
     g_fast_ack          => false,
     g_sdb_address       => sdb_addr,
