@@ -620,7 +620,7 @@ eb_slv_int_slave_in.sel <= wb_sel;
 eb_slv_int_slave_in.stb <= wb_stb  when (wb_bar = c_BAR_CFG and wb_adr(7) = '1') else '0';
 
 
-eb_slave: entity eb_pcie_slave
+eb_slave: eb_pcie_slave
   generic map (
     g_fast_ack          => false,
     g_sdb_address       => sdb_addr,
