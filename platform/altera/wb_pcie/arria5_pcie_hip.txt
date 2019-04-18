@@ -33,9 +33,9 @@
 -- Retrieval info: 	<generic name="endpoint_l0_latency_hwtcl" value="0" />
 -- Retrieval info: 	<generic name="endpoint_l1_latency_hwtcl" value="0" />
 -- Retrieval info: 	<generic name="bar0_type_0_hwtcl" value="2" />
--- Retrieval info: 	<generic name="bar0_size_mask_0_hwtcl" value="7" />
+-- Retrieval info: 	<generic name="bar0_size_mask_0_hwtcl" value="8" />
 -- Retrieval info: 	<generic name="bar1_type_0_hwtcl" value="2" />
--- Retrieval info: 	<generic name="bar1_size_mask_0_hwtcl" value="24" />
+-- Retrieval info: 	<generic name="bar1_size_mask_0_hwtcl" value="16" />
 -- Retrieval info: 	<generic name="bar2_type_0_hwtcl" value="0" />
 -- Retrieval info: 	<generic name="bar2_size_mask_0_hwtcl" value="0" />
 -- Retrieval info: 	<generic name="bar3_type_0_hwtcl" value="0" />
